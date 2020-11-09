@@ -47,10 +47,10 @@ public class TestTrack {
     public static void main(String[] args) {
         TestTrack track1 = new TestTrack();
         
-        track1.addCar(new ElectricCar("Tesla 1", 0));
-        track1.addCar(new ElectricCar("Tesla 2", 0));
-        track1.addCar(new DieselCar("Tesla 2", 0));
-        track1.addCar(new DieselCar("Tesla 2", 0));
+        track1.addCar(new ElectricCar("Tesla 1", 0, "HD34VDR"));
+        track1.addCar(new ElectricCar("Tesla 2", 0, "CJ76TGR"));
+        track1.addCar(new DieselCar("Tesla 2", 0, "CJ54RFD"));
+        track1.addCar(new DieselCar("Tesla 2", 0, "SJ65BGF"));
         
         track1.testAccelerate(4);
         
