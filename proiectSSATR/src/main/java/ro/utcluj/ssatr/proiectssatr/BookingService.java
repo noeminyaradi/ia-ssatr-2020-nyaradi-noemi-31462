@@ -6,6 +6,7 @@
 package ro.utcluj.ssatr.proiectssatr;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -16,6 +17,10 @@ public class BookingService {
 
     public BookingService(DBAccess db) {
         this.db = db;
+    }
+    
+    public List<Booking> getAllBookings() throws SQLException {
+        return db.fetchAllBookings();
     }
     
     public String submitBooking(Booking booking) throws SQLException {

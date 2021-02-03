@@ -14,13 +14,14 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
  * @author NoemiNyaradi
  */
 public class AirlineReservationSystem {
-    private BookingService bookingService;
+    private final BookingService bookingService;
 
     public AirlineReservationSystem(BookingService bookingService) {
         this.bookingService = bookingService;
@@ -40,19 +41,23 @@ public class AirlineReservationSystem {
                 BufferedReader fluxIn = new BufferedReader(new InputStreamReader(s.getInputStream()));
                 PrintWriter fluxOut = new PrintWriter(new OutputStreamWriter(s.getOutputStream()),true);
                 //......
-                String line = "";
-                List<String> bookingParams = new ArrayList<>();
+                String line = fluxIn.readLine();
                 
-                while(!line.equals("END")){
-                    line = fluxIn.readLine();
-                    bookingParams.add(line);
+                if (line.equals("GET_RESERVATIONS")) {
+                    List<Booking> allBookings = bookingService.getAllBookings();
+                    allBookings.stream()
+                            .map(Booking::toString)
+                            .forEach(fluxOut::println);
+                } else {
+                    List<String> bookingParams = fluxIn.lines()
+                            .collect(Collectors.toList());
+                    Booking booking = new Booking(bookingParams.get(0),bookingParams.get(1),
+                            bookingParams.get(2),bookingParams.get(3),Integer.valueOf(bookingParams.get(4)));
+
+                    String responseMessage = bookingService.submitBooking(booking);
+                    fluxOut.println(responseMessage);
                 }
                 
-                Booking booking = new Booking(bookingParams.get(0),bookingParams.get(1),
-                        bookingParams.get(2),bookingParams.get(3),Integer.valueOf(bookingParams.get(4)));
-                
-                String responseMessage = bookingService.submitBooking(booking);
-                fluxOut.println(responseMessage);
 
                 s.close();
             }

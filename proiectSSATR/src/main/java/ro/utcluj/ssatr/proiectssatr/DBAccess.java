@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -22,6 +24,21 @@ public class DBAccess {
     public DBAccess() throws ClassNotFoundException, SQLException {
          Class.forName("org.apache.derby.jdbc.ClientDriver");
          conn = DriverManager.getConnection("jdbc:derby://localhost:1527/ars_db;create=false","APP","APP");
+    }
+    
+    public List<Booking> fetchAllBookings() throws SQLException {
+        Statement s = conn.createStatement();
+        ResultSet rs = s.executeQuery("SELECT * FROM BOOKING");
+        
+        List<Booking> bookings = new ArrayList<>();
+        
+        while(rs.next()){
+            bookings.add(new Booking(rs.getString("cnp"), rs.getString("name"), 
+                    rs.getString("destination"), rs.getString("class_type"), 
+                    rs.getInt("seat_number")));
+        }
+        
+        return bookings;
     }
     
     public void insertBooking(Booking booking) throws SQLException {

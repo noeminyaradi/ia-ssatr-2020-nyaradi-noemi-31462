@@ -43,4 +43,8 @@ public class Booking {
     public int getSeatNumber() {
         return seatNumber;
     } 
+    
+    public String toString() {
+        return String.join("\t\t", cnp, name, destinationName, classType, String.valueOf(seatNumber));
+    }
 }
