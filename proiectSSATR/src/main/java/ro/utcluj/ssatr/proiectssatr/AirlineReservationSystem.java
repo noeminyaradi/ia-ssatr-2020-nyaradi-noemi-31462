@@ -49,8 +49,12 @@ public class AirlineReservationSystem {
                             .map(Booking::toString)
                             .forEach(fluxOut::println);
                 } else {
-                    List<String> bookingParams = fluxIn.lines()
-                            .collect(Collectors.toList());
+                    List<String> bookingParams = new ArrayList();
+                            
+                    while (!line.equals("END")) {
+                        bookingParams.add(line);
+                        line = fluxIn.readLine();
+                    }
                     Booking booking = new Booking(bookingParams.get(0),bookingParams.get(1),
                             bookingParams.get(2),bookingParams.get(3),Integer.valueOf(bookingParams.get(4)));
 
